@@ -36,7 +36,7 @@ export default {
 </script>
 <style scoped>
 .unicorn-card {
-  min-width: 250px;
+  min-width: 200px;
   background-color: aliceblue;
   border-radius: 15px;
   border: 1px solid #7EA8EF;
