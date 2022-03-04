@@ -1,7 +1,7 @@
 <template>
-    <div class="unicorn-list">
-        <unicorn-card v-for="(unicorn, index) in unicorns" :unicorn="unicorn" :key="index"/>
-    </div>
+  <div class="unicorn-list">
+      <unicorn-card v-for="(unicorn, index) in unicorns" :unicorn="unicorn" :key="index"/>
+  </div>
 </template>
 <script>
 import UnicornCard from '@/components/UnicornCard'
@@ -24,5 +24,23 @@ export default {
     grid-template-columns: repeat(5, minmax(0, 1fr));
     column-gap: 16px;
     row-gap: 32px;
+}
+
+@media screen and (max-width: 1200px) {
+  .unicorn-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .unicorn-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .unicorn-list {
+    grid-template-columns: auto;
+  }
 }
 </style>

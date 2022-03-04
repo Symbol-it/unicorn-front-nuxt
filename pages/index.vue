@@ -1,6 +1,5 @@
 <template>
   <div class="unicorns">
-    <h1 class="unicorns__title">Unicorns</h1>
     <unicorn-list :unicorns="unicorns" />
   </div>
 </template>
@@ -19,13 +18,6 @@ export default {
 </script>
 <style scoped>
 .unicorns {
-  font-family: 'Fredoka';
   margin: 40px;
-}
-
-.unicorns__title {
-  text-align: center;
-  letter-spacing: 5px;
-  font-weight: bold;
 }
 </style>
