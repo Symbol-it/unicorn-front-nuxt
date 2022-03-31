@@ -1,6 +1,8 @@
 <template>
   <div class="unicorn">
-    <img class="unicorn__photo" :src="photoUnicornUrl" alt="Photo de la licorne">
+    <picture-found :unicorn="unicorn" class="unicorn__photo" />
+    <!--<img v-if="photoFound" class="unicorn__photo" :src="photoUnicornUrl" alt="Photo de la licorne">
+    <img v-else class="unicorn__photo" src="~assets/icons/not-found-image.jpg" alt="Photo de la licorne">-->
     <ul class="unicorn__details">
       <li>
         <span class="unicorn__details__label">Nom :</span>
@@ -36,24 +38,38 @@
 </template>
 <script>
 import DeleteModal from "../components/DeleteModal";
+import PictureFound from '../components/PictureFound.vue';
 export default {
   name: 'UnicornDetail',
-  components: {DeleteModal},
+  components: {DeleteModal,PictureFound},
   data () {
     return {
       showConfirmationDelete: false,
     }
   },
 
-  async asyncData ({ params, $http }) {
+  async asyncData ({ params, error, $http }) {
     const unicornId = params.id
-    const unicorn = await $http.$get('http://localhost:1337/unicorns/' + unicornId)
-    return { unicorn }
+    
+    try{
+      const unicorn = await $http.$get('http://localhost:1337/unicorns/' + unicornId)
+      return { unicorn };
+    }
+    catch (err){
+      error({ statusCode: 404, message: 'Post not found' })
+    }
+    
   },
 
   computed: {
     photoUnicornUrl () {
       return 'http://localhost:1337' + this.unicorn.photo.url
+    },
+    photoFound(){
+      return !(this.unicorn.photo == null);
+    },
+    getUnicorn(){
+      return this.unicorn;
     }
   },
 
@@ -65,12 +81,19 @@ export default {
       this.showConfirmationDelete = false
     },
     async deleteUnicorn () {
-      await this.$http.$delete('http://localhost:1337/unicorns/' + this.unicorn.id)
-      this.showConfirmationDelete = false
-      await this.$router.push('/')
+      try{
+        let name = this.unicorn.name;
+        //await this.$http.$delete('http://localhost:1337/unicorns/' + this.unicorn.id)
+        this.showConfirmationDelete = false
+        await this.$router.push('/')
+        alert("Unicorn " + name + " has been deleted");
+      }
+      catch(e){
+        console.log(e);
+      }
     },
-    updateUnicorn() {
-      this.$router.push('/update')
+    async updateUnicorn() {
+      this.$router.push(`/update/${this.unicorn.id}`);
     }
   }
 }
@@ -86,12 +109,12 @@ export default {
   margin: auto;
 }
 
-.unicorn__photo {
+/*.unicorn__photo img{
   height: 300px;
   width: 300px;
   object-fit: cover;
   border-radius: 100%;
-}
+}*/
 
 .unicorn__details {
   list-style: none;

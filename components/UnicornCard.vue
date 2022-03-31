@@ -1,22 +1,26 @@
 <template>
     <div class="unicorn-card">
         <div class="unicorn-card__bloc-photo">
-            <img class="unicorn-card__bloc-photo__image" :src="srcImage">
+            <picture-found class="unicorn-card__bloc-photo__image" :unicorn="unicorn" />
+            <!--<img v-if="pictureFound" class="unicorn-card__bloc-photo__image" :src="srcImage">
+            <img v-else class="unicorn-card__bloc-photo__image" src="~assets/icons/not-found-image.jpg">-->
         </div>
         <div class="unicorn-card__name">
             Nom : <span>{{ unicorn.name }}</span>
         </div>
         <div class="unicorn-card__button">
-            <unicorn-button :to="to">Voir plus</unicorn-button>
+            <unicorn-button :to="toTest">Voir plus</unicorn-button>
         </div>
     </div>
 </template>
 <script>
 import UnicornButton from '@/components/UnicornButton'
+import PictureFound from '@/components/PictureFound';
 export default {
     name: 'UnicornCard',
     components: {
-        UnicornButton
+        UnicornButton,
+        PictureFound
     },
     props: {
         unicorn: {
@@ -26,10 +30,13 @@ export default {
     },
     computed: {
         srcImage () {
-            return 'http://localhost:1337' + this.unicorn.photo.url || ''
+            return 'http://localhost:1337' + this.unicorn.photo.url || '';
         },
-        to () {
-            return `/${this.unicorn.id}`
+        toTest () {
+            return `/${this.unicorn.id}`;
+        },
+        getUnicorn(){
+          return this.unicorn;
         }
     }
 }
@@ -49,14 +56,14 @@ export default {
   text-align: center;
 }
 
-.unicorn-card__bloc-photo__image {
+/*.unicorn-card__bloc-photo__image img{
   margin-top: 15px;
   border-radius: 100%;
   width: 144px;
   height: 144px;
   object-fit: cover;
   object-position: center;
-}
+}*/
 
 .unicorn-card__name {
   text-align: center;
