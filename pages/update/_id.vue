@@ -2,9 +2,10 @@
     <div class="update-id">
         <span> 
             Editing {{ unicorn.name }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <picture-found class="update-id__picture-found" :unicorn="unicorn"/>
+            <picture-found v-show="!pictureSelected" class="update-id__picture-found" :unicorn="unicorn"/>
+            <img v-show="pictureSelected" class="update-id__label__photo"/>
         </span>
-        <formulaire-unicorn :txtPicture="txtPicture" :unicorn="unicorn" :valeur="edit" @act="editUnicorn"/>
+        <formulaire-unicorn :txtPicture="txtPicture" :unicorn="unicorn" :valeur="edit" @act-submit="editUnicorn" @act-upload="previewPicture"/>
     </div>
 </template>
 <script>
@@ -13,6 +14,11 @@ import FormulaireUnicorn from '../../components/FormulaireUnicorn.vue';
 export default {
   components: { PictureFound, FormulaireUnicorn },
     name: "Update",
+    data(){
+        return {
+            pictureSelected: false
+        }
+    },
     async asyncData( { params, error, $http }){
         const {id} = params
         try{
@@ -42,8 +48,8 @@ export default {
                 if(elm[i].name == 'hobbies') object[elm[i].name] = elm[i].value;
             }
             if(elm[4].value !== ""){
-                await this.$http.$post("http://localhost:1337/upload", new FormData(document.querySelector('form'))); // input file doit avoir le name : files
-                const taille =await this.$http.$get("http://localhost:1337/upload/files/count").then( valeur => {return valeur; });
+                await this.$http.$post("http://localhost:1337/upload", new FormData(document.querySelector('form'))); // <input file> doit avoir le name : files
+                const taille = await this.$http.$get("http://localhost:1337/upload/files/count").then( valeur => {return valeur; });
                 const newUrl = await this.$http.$get("http://localhost:1337/upload/files/").then(valeur => { return valeur; });
                 const newPhoto = newUrl[taille-1];
                 object['photo'] = newPhoto;
@@ -52,6 +58,15 @@ export default {
             await this.$http.$put("http://localhost:1337/unicorns/"+this.unicorn.id, object);
             this.$router.go(-1);
             alert("Unicorn edit with success !");
+        },
+
+        previewPicture(){
+            let inputFile = document.querySelector(".formulaire-unicorn__input-file");
+            inputFile.onchange = () => {
+                this.pictureSelected = true;
+                let img = document.querySelector(".update-id__label__photo");
+                img.src = URL.createObjectURL(inputFile.files[0]);
+            };
         }
     }
 }
@@ -68,4 +83,14 @@ export default {
     border-radius: 15px;
     margin-bottom: 0.50em;
 }
+
+.update-id__label__photo{
+    width:100px;
+    height: 100px;
+    border-radius: 100%;
+    vertical-align: middle;
+    padding-top: 0.5em;
+}
+
+
 </style>

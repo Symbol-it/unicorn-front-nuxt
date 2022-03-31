@@ -8,9 +8,9 @@
         <input type="text" name="weight" id="weight" autocomplete="off" :placeholder="unicorn.weight" class="formulaire-unicorn__input"> <br/>
         <label for="hobbies"> Hobbies </label> <br/>
         <input type="text" name="hobbies" id="hobbies" autocomplete="off" :value="unicorn.hobbies" class="formulaire-unicorn__input"> <br/>
-        <label for="picture"> {{ txtPicture }} </label> <br/>
+        <label for="avatar"> {{ txtPicture }} </label> <br/>
         <form>
-            <input type="file" class="formulaire-unicorn__input-file formulaire-unicorn__input-file--padding" name="files" accept="image/png, image/jpeg">
+            <input type="file" id="avatar" @click="actUpload" class="formulaire-unicorn__input-file formulaire-unicorn__input-file--padding" name="files" accept="image/png, image/jpeg">
             <hr> 
             <input type="submit" @click="actSubmit" class="formulaire-unicorn__input-button" :value="valeur">
         </form>
@@ -38,7 +38,11 @@ export default{
     methods: {
         actSubmit(e) {
             e.preventDefault();
-            this.$emit("act");
+            this.$emit("act-submit");
+        },
+
+        actUpload(){
+            this.$emit("act-upload");
         }
     }
 }
