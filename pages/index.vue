@@ -1,17 +1,20 @@
 <template>
   <div class="unicorns">
+    <fab-add/>
     <unicorn-list :unicorns="unicorns" />
   </div>
 </template>
 <script>
 import UnicornList from '@/components/UnicornList'
+import FabAdd from '@/components/FabAdd.vue'
 export default {
   name: 'IndexPage',
   components: {
-    UnicornList
-  },
+    UnicornList,
+    FabAdd
+  }, 
   async asyncData ({ $http }) {
-    const unicorns = await $http.$get('http://localhost:1337/unicorns?_sort=name:ASC')
+    const unicorns = await $http.$get(process.env.baseUrl + '/unicorns?_sort=name:ASC')
     return { unicorns }
   }
 }

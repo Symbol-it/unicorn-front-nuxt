@@ -1,7 +1,7 @@
 <template>
     <div class="unicorn-card">
         <div class="unicorn-card__bloc-photo">
-            <img class="unicorn-card__bloc-photo__image" :src="srcImage">
+            <unicorn-picture :unicorn="unicorn" medium/>
         </div>
         <div class="unicorn-card__name">
             Nom : <span>{{ unicorn.name }}</span>
@@ -13,10 +13,12 @@
 </template>
 <script>
 import UnicornButton from '@/components/UnicornButton'
+import UnicornPicture from '@/components/UnicornPicture.vue'
 export default {
     name: 'UnicornCard',
     components: {
-        UnicornButton
+        UnicornButton,
+        UnicornPicture
     },
     props: {
         unicorn: {
@@ -25,9 +27,6 @@ export default {
         }
     },
     computed: {
-        srcImage () {
-            return 'http://localhost:1337' + this.unicorn.photo.url || ''
-        },
         to () {
             return `/${this.unicorn.id}`
         }
@@ -47,15 +46,6 @@ export default {
 
 .unicorn-card__bloc-photo {
   text-align: center;
-}
-
-.unicorn-card__bloc-photo__image {
-  margin-top: 15px;
-  border-radius: 100%;
-  width: 144px;
-  height: 144px;
-  object-fit: cover;
-  object-position: center;
 }
 
 .unicorn-card__name {
