@@ -1,6 +1,6 @@
 <template>
   <div class="unicorn">
-    <img class="unicorn__photo" :src="photoUnicornUrl" alt="Photo de la licorne">
+    <unicorn-picture class="picture-unicorn__photo" :unicorn="unicorn" />
     <ul class="unicorn__details">
       <li>
         <span class="unicorn__details__label">Nom :</span>
@@ -20,7 +20,7 @@
       </li>
     </ul>
     <div class="unicorn__actions">
-      <button class="unicorn__actions__button" @click="openConfimartionDelete">
+      <button class="unicorn__actions__button" @click="openConfirmationDelete">
         Supprimer
       </button>
       <button class="unicorn__actions__button" @click="updateUnicorn">
@@ -35,42 +35,51 @@
   </div>
 </template>
 <script>
-import DeleteModal from "../components/DeleteModal";
+import DeleteModal from "@/components/DeleteModal";
+import UnicornPicture from '@/components/UnicornPicture.vue';
 export default {
   name: 'UnicornDetail',
-  components: {DeleteModal},
+  components: { DeleteModal, UnicornPicture },
   data () {
     return {
       showConfirmationDelete: false,
     }
   },
 
-  async asyncData ({ params, $http }) {
+  async asyncData ({ params, error, $http }) {
     const unicornId = params.id
-    const unicorn = await $http.$get('http://localhost:1337/unicorns/' + unicornId)
-    return { unicorn }
-  },
-
-  computed: {
-    photoUnicornUrl () {
-      return 'http://localhost:1337' + this.unicorn.photo.url
+    
+    try{
+      const unicorn = await $http.$get(process.env.baseUrl + '/unicorns/' + unicornId)
+      return { unicorn }
     }
+    catch (err){
+      error({ statusCode: 500, message: 'La licorne n\'existe pas' })
+    }
+    
   },
 
   methods: {
-    openConfimartionDelete () {
+    openConfirmationDelete () {
       this.showConfirmationDelete = true
     },
     cancelDeleteUnicorn () {
       this.showConfirmationDelete = false
     },
     async deleteUnicorn () {
-      await this.$http.$delete('http://localhost:1337/unicorns/' + this.unicorn.id)
-      this.showConfirmationDelete = false
-      await this.$router.push('/')
+      try{
+        const name = this.unicorn.name;
+        await this.$http.$delete(process.env.baseUrl + '/unicorns/' + this.unicorn.id)
+        this.showConfirmationDelete = false
+        await this.$router.push('/')
+        this.$toast.success('Unicorn ' + name + ' a été supprimé').goAway(2500)
+      }
+      catch(e){
+        this.$toast.error('Problème dans la suppresion de la licorne')
+      }
     },
     updateUnicorn() {
-      this.$router.push('/update')
+      this.$router.push(`/update/${this.unicorn.id}`)
     }
   }
 }
@@ -86,7 +95,7 @@ export default {
   margin: auto;
 }
 
-.unicorn__photo {
+.picture-unicorn__photo{
   height: 300px;
   width: 300px;
   object-fit: cover;
