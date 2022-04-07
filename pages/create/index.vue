@@ -2,12 +2,17 @@
     <div class="add-unicorn">
         <formulaire-unicorn 
             submitActionName="ajouter" 
-            @act="addUnicorn" 
-            class="add-unicorn__formulaire"/>
+            @act="addUnicorn"
+            class="add-unicorn__formulaire"
+        />
     </div>
 </template>
 <script>
+import FormulaireUnicorn from '@/components/FormulaireUnicorn.vue'
 export default{
+    components: {
+        FormulaireUnicorn
+    },
     methods: {
         async addUnicorn(form){
             try {
@@ -21,17 +26,16 @@ export default{
                 }
                 await this.$http.$post(process.env.baseUrl + "/unicorns/", form)
                 this.$router.go(-1)
-                this.$toast.success('La ' + form.name + ' a été créée avec succès ').goAway(2500)
+                this.$toast.success('La licorne' + form.name + ' a été créée avec succès ').goAway(2500)
             }
             catch(e){
                 this.$toast.error('Problème dans la création de la licorne').goAway(2500)
             }
         }
-    }
+    },
 }
 </script>
 <style scoped>
-
 .add-unicorn{
     width: 400px;
     text-align: center;

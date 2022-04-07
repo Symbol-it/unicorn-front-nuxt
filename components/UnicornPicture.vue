@@ -1,5 +1,8 @@
 <template>
-        <img :class="['unicorn-picture', {'unicorn-picture--small' : small, 'unicorn-picture--medium' : medium }]" :src="srcImage">
+        <img 
+            :class="['unicorn-picture', {'unicorn-picture--small' : small, 'unicorn-picture--medium' : medium }]" 
+            :src="srcImage" 
+            alt="image représentant la licorne">
 </template>
 <script>
     export default{
@@ -7,11 +10,15 @@
         props:{
             unicorn: {
                 type: Object,
-                required: true
+                required: false
             },
             small: {
                 type: Boolean,
                 default: false
+            },
+            preview: {
+                type: String,
+                default: ''
             },
             medium: {
                 type: Boolean,
@@ -20,7 +27,8 @@
         },
         computed:{
             srcImage(){
-                if(this.unicorn.photo) return process.env.baseUrl + this.unicorn.photo.url
+                if(this.unicorn && this.unicorn.photo && !this.preview) return process.env.baseUrl + this.unicorn.photo.url
+                if(this.preview) return this.preview
                 return require('~/assets/icons/not-found-image.jpg')
             }
         }
@@ -35,17 +43,6 @@
     border-radius: 100%;
 }
 
-.unicorn-picture--small{
-    margin-top: 15px;
-    border-radius: 100%;
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    object-position: center;
-    display:inline;
-    vertical-align: middle;
-}
-
 .unicorn-picture--medium{
     margin-top: 15px;
     border-radius: 100%;
@@ -58,8 +55,7 @@
 }
 
 .unicorn-picture--small{
-    margin-top: 15px;
-    margin-left: 10%;
+    margin: 10px 0 15px 0;
     border-radius: 100%;
     width: 100px;
     height: 100px;
