@@ -1,24 +1,37 @@
 <template>
   <div class="unicorn">
-    <unicorn-picture class="picture-unicorn__photo" :unicorn="unicorn" />
-    <ul class="unicorn__details">
-      <li>
-        <span class="unicorn__details__label">Nom :</span>
-        {{ unicorn.name }}
-      </li>
-      <li>
-        <span class="unicorn__details__label">Année de naissance :</span>
-        {{ unicorn.birthyear }}
-      </li>
-      <li>
-        <span class="unicorn__details__label">Poids :</span>
-        {{ unicorn.weight }} kg
-      </li>
-      <li>
-        <span class="unicorn__details__label">Hobbies :</span>
-        {{ unicorn.hobbies }}
-      </li>
-    </ul>
+    <div class="unicorn__info">
+      <unicorn-picture class="picture-unicorn__photo" :unicorn="unicorn" />
+        <div class="unicorn__info-details">
+          <ul class="unicorn__details">
+            <li>
+              <span class="unicorn__details__label">Nom :</span>
+              {{ unicorn.name }}
+            </li>
+            <li>
+              <span class="unicorn__details__label">Année de naissance :</span>
+              {{ unicorn.birthyear }}
+            </li>
+            <li>
+              <span class="unicorn__details__label">Poids :</span>
+              {{ unicorn.weight }} kg
+            </li>
+            <li>
+              <span class="unicorn__details__label">Hobbies :</span>
+              {{ unicorn.hobbies }}
+            </li>
+          </ul>
+
+          <ul v-if="!noCapacities" class="unicorn__details">
+            <li v-for="(value, index) in unicorn.capacities" :key="index">
+             <span class="unicorn__details__capacite"> {{ value.label }} </span> 
+             <progress class="unicorn__details__progress-bar" max="100" :value="Math.random() * 100 + 50"/>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
     <div class="unicorn__actions">
       <button class="unicorn__actions__button" @click="openConfirmationDelete">
         Supprimer
@@ -59,6 +72,11 @@ export default {
     
   },
 
+  computed: {
+    noCapacities(){
+      return this.unicorn.capacities.length === 0
+    }
+  },
   methods: {
     openConfirmationDelete () {
       this.showConfirmationDelete = true
@@ -102,11 +120,47 @@ export default {
   border-radius: 100%;
 }
 
+.unicorn__info-details{
+  display:flex;
+  margin:auto;
+  justify-content: center;
+}
+
+.unicorn__details__capacite{
+  display: inline-block;
+  width: 100px;
+}
+
+.unicorn__details__progress-bar, .unicorn__details__progress-bar::-webkit-progress-bar{
+  vertical-align: middle;
+  height: 5px;
+  background-color: lightgray;
+  border: 0;
+}
+.unicorn__details__progress-bar::-moz-progress-bar{
+  background-color: #FFD803;
+  height: 5px;
+}
+
+::-webkit-progress-value{
+  background-color: #FFD803;
+}
+
+.unicorn__details__capacite{
+  margin-right: 15px;
+}
+
 .unicorn__details {
   list-style: none;
   padding: 0;
   display: grid;
-  row-gap: 20px;
+  border: 2px solid #7EA8EF;
+  border-radius: 16px;
+  width: 350px;
+  height: 200px;
+  background-color: #F0F8FF;
+  margin: 10px;
+  align-items: center;
 }
 
 .unicorn__details__label {
