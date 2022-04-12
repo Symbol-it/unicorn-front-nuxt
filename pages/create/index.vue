@@ -2,9 +2,9 @@
     <div class="add-unicorn">
         <formulaire-unicorn 
             submitActionName="ajouter" 
-            @act="addUnicorn"
-            class="add-unicorn__formulaire"
-        />
+            @act="addUnicorn" 
+            :capacities="capacities"
+            class="add-unicorn__formulaire"/>
     </div>
 </template>
 <script>
@@ -12,6 +12,10 @@ import FormulaireUnicorn from '@/components/FormulaireUnicorn.vue'
 export default{
     components: {
         FormulaireUnicorn
+    },
+    async asyncData({ $http }){
+        const capacities = await $http.$get(process.env.baseUrl + '/capacities')
+        return { capacities }
     },
     methods: {
         async addUnicorn(form){
