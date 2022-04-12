@@ -129,6 +129,38 @@ export default{
     padding: 10px 20px;
     margin: 5px 5px 10px 5px;
 }
+.formulaire-unicorn__span-capacities{
+    display:block;
+}
+
+.formulaire-unicorn__span-capacities__label{
+    text-align: center;
+    display: inline-block;
+    width: 150px;
+    margin: 5px 0 5px 0;
+    padding: 15px 0 15px 0;
+    border-radius: 16px;
+    cursor: pointer;
+    color: white;
+}
+
+.formulaire-unicorn__span-capacities__label:hover{
+    box-shadow: inset 0px -4px 0px rgba(255, 255, 255, 0.25);
+    transition: box-shadow 0.5s;
+}
+
+.formulaire-unicorn__span-capacities__input:checked + .formulaire-unicorn__span-capacities__label{
+    background-color: green;
+}
+
+
+.formulaire-unicorn__span-capacities__input{
+    display: none;
+}
+
+.formulaire-unicorn__span-capacities__input + .formulaire-unicorn__span-capacities__label{
+    background-color: red;
+}
 
 .formulaire-unicorn__capacities__items__label{
     text-align: center;
