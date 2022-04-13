@@ -1,21 +1,17 @@
 <template>
-    <div class="update-id">
-        <span> 
-            Modifie {{ unicorn.name }}
-            <unicorn-picture small :unicorn="unicorn"/>
-        </span>
+    <div class="update-unicorn">
         <formulaire-unicorn 
-            txtPicture="Nouvelle Image" 
+            txtPicture="Charger une nouvelle image" 
             :unicorn="unicorn" 
             submitActionName="modifier" 
-            @act="editUnicorn"/>
+            @act="editUnicorn"
+        />
     </div>
 </template>
 <script>
-import UnicornPicture from '@/components/UnicornPicture.vue'
 import FormulaireUnicorn from '@/components/FormulaireUnicorn.vue'
 export default {
-  components: { UnicornPicture, FormulaireUnicorn },
+  components: { FormulaireUnicorn },
     name: "Update",
     async asyncData({ params, error, $http }){
         const {id} = params
@@ -27,7 +23,6 @@ export default {
             error({statutCode:500, message:'Impossible de trouver la licorne'})
         }
     },
-
     methods: {
         async editUnicorn(form){
             try{
@@ -41,7 +36,7 @@ export default {
                 }
                 await this.$http.$put(process.env.baseUrl + "/unicorns/"+this.unicorn.id, form)
                 this.$toast.success('Unicorn ' + form.name + ' a été modifié avec succès').goAway(2500)
-                this.$router.go(-1)
+                this.$router.push(`/${this.unicorn.id}`)
             }
             catch(e){
                 this.$toast.error("Problème dans la modification de la licorne").goAway(2500)
@@ -51,7 +46,7 @@ export default {
 }
 </script>
 <style scoped>
-.update-id{
+.update-unicorn{
     width: 400px;
     text-align: center;
     margin: auto;

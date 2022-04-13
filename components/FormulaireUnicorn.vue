@@ -1,5 +1,13 @@
 <template>
     <div class="formulaire-unicorn">
+        <span>
+            <span class="formulaire-unicorn__title" v-if="isEditing">
+                Modifie {{ unicorn.name }}
+            </span>
+            <label for="picture">
+                <unicorn-picture small :unicorn="form" :preview="image"/>
+            </label>
+        </span>
         <form>
             <label for="name" class="formulaire-unicorn__label--display">Nom</label>
             <input 
@@ -37,6 +45,8 @@
             <input 
                 type="file" 
                 class="formulaire-unicorn__input-file" 
+                id="picture"
+                @change="editImage"
                 name="files" 
                 accept="image/png, image/jpeg">
             <hr> 
@@ -74,12 +84,22 @@ export default{
                 weight: this.unicorn?.weight || '',
                 hobbies: this.unicorn?.hobbies || '',
                 photo: this.unicorn?.photo || null
-            }
+            },
+
+            image: ''
+        }
+    },
+    computed: {
+        isEditing(){
+            return this.submitActionName === 'modifier'
         }
     },
     methods: {
         actSubmit() {
             this.$emit("act", this.form)
+        },
+        editImage(e){
+            this.image = URL.createObjectURL(e.target.files[0])
         }
     }
 }
@@ -129,5 +149,9 @@ hr {
     background: #7EA8EF;
     border: 2px solid black;
     box-shadow: inset -4px -4px 0px rgba(255, 255, 255, 0.25);
+}
+
+.formulaire-unicorn__title{
+    margin-right: 10%;
 }
 </style>
