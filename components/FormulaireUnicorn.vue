@@ -41,6 +41,13 @@
                 autocomplete="off" 
                 v-model="form.hobbies" 
                 class="formulaire-unicorn__input"> 
+
+            <div class="formulaire-unicorn__capacities">
+                <div class="formulaire-unicorn__capacities__items" v-for="(cap,index) in capacities" :key="index"> 
+                    <input type="checkbox" class="formulaire-unicorn__capacities__items__input" :id="cap.label" :value="cap" v-model="form.capacities"> 
+                    <label :for="cap.label" class="formulaire-unicorn__capacities__items__label"> {{ cap.label }} </label>
+                </div>
+            </div>
             <label for="picture" class="formulaire-unicorn__label--display">{{ txtPicture }}</label> 
             <input 
                 type="file" 
@@ -74,6 +81,9 @@ export default{
         txtPicture: {
             type: String,
             default: "Image"
+        },
+        capacities: {
+            type: Array
         }
     },
     data() {
@@ -83,7 +93,8 @@ export default{
                 birthyear: this.unicorn?.birthyear || '',
                 weight: this.unicorn?.weight || '',
                 hobbies: this.unicorn?.hobbies || '',
-                photo: this.unicorn?.photo || null
+                photo: this.unicorn?.photo || null,
+                capacities: this.unicorn?.capacities || []
             },
 
             image: ''
@@ -119,10 +130,40 @@ export default{
     margin: 5px 5px 10px 5px;
 }
 
+.formulaire-unicorn__capacities__items__label{
+    text-align: center;
+    display: inline-block;
+    width: 150px;
+    margin: 5px 0 5px 0;
+    padding: 15px 0 15px 0;
+    border-radius: 16px;
+    cursor: pointer;
+    color: white;
+}
+
+.formulaire-unicorn__capacities__items__label:hover{
+    box-shadow: inset 0px -4px 0px rgba(255, 255, 255, 0.25);
+    transition: box-shadow 0.5s;
+}
+
+.formulaire-unicorn__capacities__items__input:checked + .formulaire-unicorn__capacities__items__label{
+    background-color: green;
+}
+
+
+.formulaire-unicorn__capacities__items__input{
+    display: none;
+}
+
+.formulaire-unicorn__capacities__items__input + .formulaire-unicorn__capacities__items__label{
+    background-color: red;
+}
+
 hr {
     width: 75%;
     color: #7EA8EF
 }
+
 .formulaire-unicorn__input-button {
     min-height: 50px;
     min-width: 150px;
