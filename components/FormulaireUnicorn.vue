@@ -43,6 +43,7 @@
                 class="formulaire-unicorn__input"> 
 
             <div class="formulaire-unicorn__capacities">
+                <label class="formulaire-unicorn__label--display"> Capacités </label>
                 <div class="formulaire-unicorn__capacities__items" v-for="(cap,index) in capacities" :key="index"> 
                     <input type="checkbox" class="formulaire-unicorn__capacities__items__input" :id="cap.label" :value="cap" v-model="form.capacities"> 
                     <label :for="cap.label" class="formulaire-unicorn__capacities__items__label"> {{ cap.label }} </label>
@@ -130,6 +131,7 @@ export default{
     margin: 5px 5px 10px 5px;
 }
 
+
 .formulaire-unicorn__capacities__items__label{
     text-align: center;
     display: inline-block;
@@ -148,6 +150,7 @@ export default{
 
 .formulaire-unicorn__capacities__items__input:checked + .formulaire-unicorn__capacities__items__label{
     background-color: green;
+    border: 0;
 }
 
 
@@ -156,7 +159,9 @@ export default{
 }
 
 .formulaire-unicorn__capacities__items__input + .formulaire-unicorn__capacities__items__label{
-    background-color: red;
+    background-color: white;
+    color: black;
+    border: 2px solid #7EA8EF;
 }
 
 hr {

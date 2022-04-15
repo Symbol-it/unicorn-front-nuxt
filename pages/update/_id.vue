@@ -3,6 +3,7 @@
         <formulaire-unicorn 
             txtPicture="Charger une nouvelle image" 
             :unicorn="unicorn" 
+            :capacities="capacities"
             submitActionName="modifier" 
             @act="editUnicorn"
         />
@@ -17,7 +18,13 @@ export default {
         const {id} = params
         try{
             const unicorn = await $http.$get(process.env.baseUrl + '/unicorns/' + id)
-            return { unicorn }
+            const capacities = await $http.$get(process.env.baseUrl + '/capacities/')
+            capacities.forEach((capacity) => {
+                if(capacity.unicorns.length > 0){
+                    delete capacity.unicorns
+                }
+            })
+            return { unicorn, capacities }
         }
         catch{
             error({statutCode:500, message:'Impossible de trouver la licorne'})
