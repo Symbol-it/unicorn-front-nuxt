@@ -13,6 +13,7 @@ export default {
   methods: {
     goBack () {
       this.$router.go(-1)
+      this.$emit("close-menu")
     }
   },
 }
@@ -29,9 +30,8 @@ export default {
   cursor: pointer;
   align-items: center;
   position: absolute;
-  top: 50%;
+  top: 0;
   left: 0;
-  transform: translateY(-50%);
   padding: 20px;
 }
 
