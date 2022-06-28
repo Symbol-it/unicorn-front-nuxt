@@ -1,6 +1,5 @@
 <template>
   <div class="unicorns">
-    <fab-add/>
     <unicorn-list :unicorns="unicorns" />
   </div>
 </template>

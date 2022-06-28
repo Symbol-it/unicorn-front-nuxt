@@ -11,6 +11,7 @@ export default{
     methods: {
     addUnicorn(){
       this.$router.push("create")
+      this.$emit("close-menu")
     }
   }
 }
